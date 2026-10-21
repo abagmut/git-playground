@@ -1,0 +1,14 @@
+{
+  "name": "tiny-todo",
+  "version": "0.1.0",
+  "description": "A tiny dependency-free todo API",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}
