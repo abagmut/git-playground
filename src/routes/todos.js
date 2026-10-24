@@ -16,6 +16,18 @@ function createTodoRoutes(store) {
       return [201, store.create(body.title)];
     }
 
+    const match = req.url.match(/^\/todos\/(\d+)$/);
+    if (match) {
+      const id = Number(match[1]);
+      if (req.method === 'PATCH') {
+        const todo = store.update(id, await readJson(req));
+        return todo ? [200, todo] : [404, { error: 'Todo not found' }];
+      }
+      if (req.method === 'DELETE') {
+        return store.remove(id) ? [204] : [404, { error: 'Todo not found' }];
+      }
+    }
+
     return null;
   };
 }
