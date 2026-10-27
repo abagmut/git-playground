@@ -2,7 +2,7 @@
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { TodoStore } = require('../src/store');
+const { TodoStore } = require('../src/todoStore');
 
 test('creates todos with incrementing ids', () => {
   const store = new TodoStore();

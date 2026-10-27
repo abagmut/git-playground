@@ -1,7 +1,7 @@
 'use strict';
 
 const http = require('node:http');
-const { TodoStore } = require('./store');
+const { TodoStore } = require('./todoStore');
 const { createTodoRoutes } = require('./routes/todos');
 const { logRequest } = require('./logger');
 
