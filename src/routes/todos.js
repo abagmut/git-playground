@@ -13,7 +13,10 @@ function createTodoRoutes(store) {
     }
     if (req.method === 'POST' && req.url === '/todos') {
       const body = await readJson(req);
-      return [201, store.create(body.title)];
+      if (typeof body.title !== 'string' || !body.title.trim()) {
+        return [400, { error: 'title is required' }];
+      }
+      return [201, store.create(body.title.trim())];
     }
 
     const match = req.url.match(/^\/todos\/(\d+)$/);
