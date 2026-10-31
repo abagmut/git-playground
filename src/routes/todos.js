@@ -1,5 +1,7 @@
 'use strict';
 
+const { isAuthorized } = require('../auth');
+
 async function readJson(req) {
   let raw = '';
   for await (const chunk of req) raw += chunk;
@@ -8,6 +10,10 @@ async function readJson(req) {
 
 function createTodoRoutes(store) {
   return async function handle(req) {
+    if (req.method !== 'GET' && !isAuthorized(req)) {
+      return [401, { error: 'Unauthorized' }];
+    }
+
     if (req.method === 'GET' && req.url === '/todos') {
       return [200, store.list()];
     }
