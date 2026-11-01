@@ -8,7 +8,7 @@ const { createRateLimiter } = require('./rateLimit');
 
 function createServer(store = new TodoStore()) {
   const handle = createTodoRoutes(store);
-  const allow = createRateLimiter();
+  const allow = createRateLimiter({ limit: Number(process.env.RATE_LIMIT) || 100 });
 
   return http.createServer(async (req, res) => {
     logRequest(req, res);
