@@ -12,9 +12,16 @@ function createServer(store = new TodoStore()) {
 
   return http.createServer(async (req, res) => {
     logRequest(req, res);
-    const result = allow(req.socket.remoteAddress)
-      ? await handle(req)
-      : [429, { error: 'Too many requests' }];
+    let result;
+    try {
+      result = allow(req.socket.remoteAddress)
+        ? await handle(req)
+        : [429, { error: 'Too many requests' }];
+    } catch (err) {
+      result = err instanceof SyntaxError
+        ? [400, { error: 'Request body is not valid JSON' }]
+        : [500, { error: 'Internal server error' }];
+    }
     const [status, body] = result ?? [404, { error: 'Not found' }];
     res.writeHead(status, { 'content-type': 'application/json' });
     res.end(body === undefined ? '' : JSON.stringify(body));

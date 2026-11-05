@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.1
+
+- Return 400 instead of crashing on malformed JSON bodies
+
 ## 1.0.0
 
 - CRUD API for todos
