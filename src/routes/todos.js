@@ -1,5 +1,7 @@
 'use strict';
 
+const MAX_TITLE_LENGTH = 200;
+
 const { isAuthorized } = require('../auth');
 
 async function readJson(req) {
@@ -23,10 +25,14 @@ function createTodoRoutes(store) {
     }
     if (req.method === 'POST' && url.pathname === '/todos') {
       const body = await readJson(req);
-      if (typeof body.title !== 'string' || !body.title.trim()) {
+      const title = typeof body.title === 'string' ? body.title.trim() : '';
+      if (!title) {
         return [400, { error: 'title is required' }];
       }
-      return [201, store.create(body.title.trim())];
+      if (title.length > MAX_TITLE_LENGTH) {
+        return [400, { error: `title must be at most ${MAX_TITLE_LENGTH} characters` }];
+      }
+      return [201, store.create(title)];
     }
 
     const match = url.pathname.match(/^\/todos\/(\d+)$/);
