@@ -14,8 +14,8 @@ class TodoStore {
     return this.todos.get(id) ?? null;
   }
 
-  create(title) {
-    const todo = { id: this.nextId++, title, done: false };
+  create(text) {
+    const todo = { id: this.nextId++, text, done: false };
     this.todos.set(todo.id, todo);
     return todo;
   }
