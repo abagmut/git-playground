@@ -14,10 +14,14 @@ function createTodoRoutes(store) {
       return [401, { error: 'Unauthorized' }];
     }
 
-    if (req.method === 'GET' && req.url === '/todos') {
-      return [200, store.list()];
+    const url = new URL(req.url, 'http://localhost');
+
+    if (req.method === 'GET' && url.pathname === '/todos') {
+      const done = url.searchParams.get('done');
+      const todos = store.list();
+      return [200, done === null ? todos : todos.filter((t) => String(t.done) === done)];
     }
-    if (req.method === 'POST' && req.url === '/todos') {
+    if (req.method === 'POST' && url.pathname === '/todos') {
       const body = await readJson(req);
       if (typeof body.title !== 'string' || !body.title.trim()) {
         return [400, { error: 'title is required' }];
@@ -25,7 +29,7 @@ function createTodoRoutes(store) {
       return [201, store.create(body.title.trim())];
     }
 
-    const match = req.url.match(/^\/todos\/(\d+)$/);
+    const match = url.pathname.match(/^\/todos\/(\d+)$/);
     if (match) {
       const id = Number(match[1]);
       if (req.method === 'PATCH') {
