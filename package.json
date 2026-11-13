@@ -1,6 +1,6 @@
 {
   "name": "tiny-todo",
-  "version": "1.0.0",
+  "version": "1.1.0-rc.1",
   "description": "A tiny dependency-free todo API",
   "main": "src/index.js",
   "scripts": {
